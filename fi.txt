@@ -1,0 +1,27 @@
+fazer um programa em python em que declaremos um registro da nossa escolha de 4 atributos
+
+exemplo: 
+
+produto(codigo, nome, saldo, valor)
+
+modelar um objeto com quantidade x de produto 
+
+get(codigo)
+get(nome)
+get(saldo)
+get(valor)
+
+declarar um ponteiro e criar um arquivo txt
+
+ptr = FILE (“produto.txt”, w);
+
+open(ptr);
+
+write(“produto.txt, p); —> inserir
+atualizar
+deletar
+consulta(codigo)
+mostrar_todos(),
+consultarnome(%, nome, %);
+
+close(ptr);
