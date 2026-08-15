@@ -1,0 +1,9 @@
+[
+    {
+        "codigo": 1234,
+        "placa": "123abc",
+        "velocidade": 676767,
+        "cor": "vermelho",
+        "ano": 2004
+    }
+]

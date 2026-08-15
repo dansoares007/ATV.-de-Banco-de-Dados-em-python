@@ -27,10 +27,14 @@ def carregar():
                 carros = []
 
 def inserir(carro):
+    if any(c.codigo == carro.codigo for c in carros):
+        print(f"Erro: Já existe um carro com o código {carro.codigo}.")
+        return
     carros.append(carro)
     salvar()
 
 def atualizar(codigo, novo_placa=None, novo_velocidade=None, novo_cor=None, novo_ano=None):
+    
     for c in carros:
         if c.codigo == codigo:
             if novo_placa: c.placa = novo_placa    
@@ -65,7 +69,7 @@ def menu():
     print('4 - mostrar todos')
     print('5 - consultar placa')
     print('6 - consultar codigo')
-    print('0 - SAIR')
+    print('0 - SAIR\n')
     return input('Digite qual função deseja: ')
 
 #executando
@@ -78,84 +82,102 @@ if __name__ == "__main__" :
 while True:
 
     resposta = menu()
+    print("\n")
 
     match resposta:
         case '1':
             carro_codigo = int(input("Digite o código do carro: "))
             carro_placa = input("Digite a placa do carro: ")
-            carro_velocidade = int(input("Digite a velocidade do carro: "))
+            carro_velocidade = int(input("Digite a quilometragem percorrida pelo carro: "))
             carro_cor = input("Digite a cor do carro: ")
             carro_ano = int(input("Digite o ano do carro: "))
             carro = Carro(carro_codigo, carro_placa, carro_velocidade, carro_cor, carro_ano)
             inserir(carro)
-            print("Inserido, papai!!!!!!!")
+            print("Inserido, papai!!!!!!!\n")
 
         case '2':
             print("1 - Atualizar placa\n2 - Atualizar velocidade\n3 - Atualizar cor\n4 - Atualizar ano\n")
             op = input("Escolha: ")
+
+            lista_carros = mostrar_todos()
+            if not lista_carros:
+                print("Nenhum carro cadastrado.")
+            else:
+                print("Escolha um dos seguinte códigos para atualizar:\n")
+                for c in lista_carros:
+                    print(f"Código: {c.codigo}")
+            
+            codigo_alvo = int(input("Digite o código do carro que deseja atualizar: "))
+            
             match op:
+                case '1':
+                    nova_placa = input("Digite a nova placa: ")
+                    if atualizar(codigo_alvo, novo_placa=nova_placa):
+                        print("Placa atualizada com sucesso, papai!")
+                    else:  
+                        print("Carro não encontrado.")
+                        
                 case '2':
-            # Primeiro, pegamos o código do carro que vai sofrer a alteração
-                    codigo_alvo = int(input("Digite o código do carro que deseja atualizar: "))
-                    
-                    print("1 - Atualizar placa\n2 - Atualizar velocidade\n3 - Atualizar cor\n4 - Atualizar ano\n")
-                    op = input("Escolha: ")
-                    
-                    match op:
-                        case '1':
-                            nova_placa = input("Digite a nova placa: ")
-                            if atualizar(codigo_alvo, novo_placa=nova_placa):
-                                print("Placa atualizada com sucesso, papai!")
-                            else:  
-                                print("Carro não encontrado.")
-                                
-                        case '2':
-                            nova_velocidade = int(input("Digite a nova velocidade: "))
-                            if atualizar(codigo_alvo, novo_velocidade=nova_velocidade):
-                                print("Velocidade atualizada com sucesso!")
-                            else:
-                                print("Carro não encontrado.")
-                                
-                        case '3':
-                            nova_cor = input("Digite a nova cor: ")
-                            if atualizar(codigo_alvo, novo_cor=nova_cor):
-                                print("Cor atualizada com sucesso!")
-                            else:
-                                print("Carro não encontrado.")
-                                
-                        case '4':
-                            novo_ano = int(input("Digite o novo ano: "))
-                            if atualizar(codigo_alvo, novo_ano=novo_ano):
-                                print("Ano atualizado com sucesso!")
-                            else:
-                                print("Carro não encontrado.")
-                                
-                        case _:
-                            print("Opção de atualização inválida.")
-
-                case '3': 
-
-                    ctemp = input("Digite o codigo do carro que você quer deletar: ")
-                    deletar(ctemp)
-
+                    nova_velocidade = int(input("Digite a nova velocidade: "))
+                    if atualizar(codigo_alvo, novo_velocidade=nova_velocidade):
+                        print("Km atualizada com sucesso!")
+                    else:
+                        print("Carro não encontrado.")
+                        
+                case '3':
+                    nova_cor = input("Digite a nova cor: ")
+                    if atualizar(codigo_alvo, novo_cor=nova_cor):
+                        print("Cor atualizada com sucesso!")
+                    else:
+                        print("Carro não encontrado.")
+                        
                 case '4':
-                    for c in motrar_todos():
-                        print(c)
-
-                case '5':
-
-                    placa = input("Digite a placa que deseja consultar: ")
-                    consultar_placa(placa)
-
-                case '6':
-
-                    ctemp = input("Digite um trecho do codigo que quer consultar: ")
-                    consulta(ctemp)
-
-                case '0': 
-                    print("SaInDo...")
-                    break
-
+                    novo_ano = int(input("Digite o novo ano: "))
+                    if atualizar(codigo_alvo, novo_ano=novo_ano):
+                        print("Ano atualizado com sucesso!")
+                    else:
+                        print("Carro não encontrado.")
+                        
                 case _:
-                    print("Numero digitado não está na sequência. Tente novamente, fi!!!!!!!!!")
+                    print("Opção de atualização inválida.")
+
+        case '3': 
+
+            ctemp = input("Digite o codigo do carro que você quer deletar: ")
+            deletar(ctemp)
+
+        case '4':
+            lista_carros = mostrar_todos()
+            if not lista_carros:
+                print("Nenhum carro cadastrado.")
+            else:
+                for c in lista_carros:
+                    print(f"Código: {c.codigo}, Placa: {c.placa}, Quilometragem: {c.velocidade}, Cor: {c.cor}, Ano: {c.ano}")
+
+        case '5':
+
+            placa = input("Digite a placa que deseja consultar: ")
+            resultados = consultar_placa(placa)
+            if resultados:
+                for c in resultados:
+                    print(f"Código: {c.codigo}, Placa: {c.placa}, Quilometragem: {c.velocidade}, Cor: {c.cor}, Ano: {c.ano}")
+            else:
+                print("Nenhum carro encontrado com essa placa.")   
+
+        case '6':
+
+            ctemp = input("Digite um trecho do codigo que quer consultar: ")
+            resultados = consulta(ctemp)
+            if resultados:
+                for c in resultados:
+                    print(f"Código: {c.codigo}, Placa: {c.placa}, Velocidade: {c.velocidade}, Cor: {c.cor}, Ano: {c.ano}")
+            else:
+                print("Nenhum carro encontrado com esse código.")   
+
+        case '0': 
+            print("SaInDo...")
+            break
+
+        case _:
+            print("Numero digitado não está na sequência. Tente novamente, fi!!!!!!!!!")
 
