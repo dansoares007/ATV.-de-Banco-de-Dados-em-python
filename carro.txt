@@ -1,0 +1,30 @@
+[
+    {
+        "codigo": 1234,
+        "placa": "657agd",
+        "velocidade": 75947,
+        "cor": "vermelho",
+        "ano": 2005
+    },
+    {
+        "codigo": 4536,
+        "placa": "gyu676",
+        "velocidade": 8888,
+        "cor": "preto",
+        "ano": 2000
+    },
+    {
+        "codigo": 5640,
+        "placa": "453gyy",
+        "velocidade": 9097,
+        "cor": "verde",
+        "ano": 2006
+    },
+    {
+        "codigo": 888,
+        "placa": "901www",
+        "velocidade": 3561,
+        "cor": "purpura",
+        "ano": 2000
+    }
+]

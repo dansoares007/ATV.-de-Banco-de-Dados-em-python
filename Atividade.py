@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import json
 import os
+from unittest import case
 
 @dataclass
 class Carro:
@@ -63,7 +64,7 @@ def consultar_placa(placa):
     return [c for c in carros if placa.lower() in c.placa.lower()]
 
 def menu():
-    print('1 - inserir')
+    print('\n1 - inserir')
     print('2 - atualizar')
     print('3 - deletar')
     print('4 - mostrar todos')
@@ -96,7 +97,7 @@ while True:
             print("Inserido, papai!!!!!!!\n")
 
         case '2':
-            print("1 - Atualizar placa\n2 - Atualizar velocidade\n3 - Atualizar cor\n4 - Atualizar ano\n")
+            print("1 - Atualizar placa\n2 - Atualizar quilometragem\n3 - Atualizar cor\n4 - Atualizar ano\n")
             op = input("Escolha: ")
 
             lista_carros = mostrar_todos()
@@ -108,6 +109,9 @@ while True:
                     print(f"Código: {c.codigo}")
             
             codigo_alvo = int(input("Digite o código do carro que deseja atualizar: "))
+            if not any(c.codigo == codigo_alvo for c in carros):
+                print("Carro não encontrado.")
+                continue
             
             match op:
                 case '1':
@@ -118,7 +122,7 @@ while True:
                         print("Carro não encontrado.")
                         
                 case '2':
-                    nova_velocidade = int(input("Digite a nova velocidade: "))
+                    nova_velocidade = int(input("Digite a nova quilometragem: "))
                     if atualizar(codigo_alvo, novo_velocidade=nova_velocidade):
                         print("Km atualizada com sucesso!")
                     else:
@@ -142,8 +146,13 @@ while True:
                     print("Opção de atualização inválida.")
 
         case '3': 
-
-            ctemp = input("Digite o codigo do carro que você quer deletar: ")
+            lista_carros = mostrar_todos()
+            if not lista_carros:
+                print("Nenhum carro cadastrado.")
+            else:
+                for c in lista_carros:
+                    print(f"Código: {c.codigo}, Placa: {c.placa}, Quilometragem: {c.velocidade}, Cor: {c.cor}, Ano: {c.ano}")
+            ctemp = int(input("Digite o codigo do carro que você quer deletar: "))
             deletar(ctemp)
 
         case '4':
@@ -155,6 +164,12 @@ while True:
                     print(f"Código: {c.codigo}, Placa: {c.placa}, Quilometragem: {c.velocidade}, Cor: {c.cor}, Ano: {c.ano}")
 
         case '5':
+            lista_carros = mostrar_todos()
+            if not lista_carros:
+                print("Nenhum carro cadastrado.")
+            else:
+                for c in lista_carros:
+                    print(f"Placa: {c.placa}")
 
             placa = input("Digite a placa que deseja consultar: ")
             resultados = consultar_placa(placa)
@@ -165,14 +180,20 @@ while True:
                 print("Nenhum carro encontrado com essa placa.")   
 
         case '6':
-
-            ctemp = input("Digite um trecho do codigo que quer consultar: ")
-            resultados = consulta(ctemp)
-            if resultados:
-                for c in resultados:
-                    print(f"Código: {c.codigo}, Placa: {c.placa}, Velocidade: {c.velocidade}, Cor: {c.cor}, Ano: {c.ano}")
+            lista_carros = mostrar_todos()
+            if not lista_carros:
+                print("Nenhum carro cadastrado.")
             else:
-                print("Nenhum carro encontrado com esse código.")   
+                for c in lista_carros:
+                    print(f"Código: {c.codigo}")
+                        
+            ctemp = int(input("\nDigite o código exato que quer consultar: "))
+            carro_encontrado = consulta(ctemp)
+            
+            if carro_encontrado:
+                print(f"Código: {carro_encontrado.codigo}, Placa: {carro_encontrado.placa}, Quilometragem: {carro_encontrado.velocidade}, Cor: {carro_encontrado.cor}, Ano: {carro_encontrado.ano}")
+            else:
+                print("Nenhum carro encontrado com esse código.")
 
         case '0': 
             print("SaInDo...")
