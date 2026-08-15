@@ -1,3 +1,5 @@
+#Atividade de Banco de Dados em Python feito pelos alunos Daniel Soares Marinho dos Santos e Miguel Augusto Barreto
+
 from dataclasses import dataclass
 import json
 import os
